@@ -48,4 +48,5 @@ RUN update-ca-certificates
 
 COPY --from=builder /workspace/manager .
 
-ENTRYPOINT ["/manager"]
+# ENTRYPOINT ["/manager"]
+ENTRYPOINT ["/bin/bash"]
