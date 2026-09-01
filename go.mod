@@ -21,7 +21,7 @@ require (
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.2
 )
 
-replace github.com/ironcore-dev/metalbond => github.com/cloudandheat/ironcore-dev-metalbond v0.0.31-test
+replace github.com/ironcore-dev/metalbond => github.com/cloudandheat/ironcore-dev-metalbond v0.0.34-first-poc
 
 require (
 	cel.dev/expr v0.25.2 // indirect
@@ -32,7 +32,7 @@ require (
 	github.com/bmatcuk/doublestar/v4 v4.0.2 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudandheat/ironcore-dev-key-exchange v0.0.31-test // indirect
+	github.com/cloudandheat/ironcore-dev-key-exchange v0.0.33-test // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect

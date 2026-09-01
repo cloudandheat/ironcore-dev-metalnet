@@ -14,10 +14,10 @@ github.com/cenkalti/backoff/v5 v5.0.3 h1:ZN+IMa753KfX5hd8vVaMixjnqRZ3y8CuJKRKj1x
 github.com/cenkalti/backoff/v5 v5.0.3/go.mod h1:rkhZdG3JZukswDf7f0cwqPNk4K0sa+F97BxZthm/crw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
-github.com/cloudandheat/ironcore-dev-key-exchange v0.0.31-test h1:TdFrUzZ2cM+8EbzVykVpsM49A2qLPgY2d7+kpXknWMA=
-github.com/cloudandheat/ironcore-dev-key-exchange v0.0.31-test/go.mod h1:pSbxUTAF/5UWTIbnghY5A3lgRgA6G0ut6nxvzawj2dI=
-github.com/cloudandheat/ironcore-dev-metalbond v0.0.31-test h1:0Q+gvy4MLjPLGswvUJvTwcSnwNG14mDjOybJ61wxwNI=
-github.com/cloudandheat/ironcore-dev-metalbond v0.0.31-test/go.mod h1:6SsUIQ3SHzKwo6eJ/ccfWNRi40xcumZo7EACsb0qbSE=
+github.com/cloudandheat/ironcore-dev-key-exchange v0.0.33-test h1:Rn4IOK6WPKw1iISsqQTqCM9uNRqa9snIPnqAaolxhpg=
+github.com/cloudandheat/ironcore-dev-key-exchange v0.0.33-test/go.mod h1:pSbxUTAF/5UWTIbnghY5A3lgRgA6G0ut6nxvzawj2dI=
+github.com/cloudandheat/ironcore-dev-metalbond v0.0.34-first-poc h1:1GxyJZhdpZwF9hXYlAkfI3I1/XcJ6pqnXzrV98J8VUc=
+github.com/cloudandheat/ironcore-dev-metalbond v0.0.34-first-poc/go.mod h1:RzVxrlOU1YGxLD3hXxsq6ZFk3G+4VAKbBNpSTFa5V3o=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
