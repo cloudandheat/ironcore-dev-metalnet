@@ -27,6 +27,11 @@ type NetworkSpec struct {
 	// +listType=map
 	// +listMapKey=id
 	PeeredPrefixes []PeeredPrefix `json:"peeredPrefixes,omitempty" patchStrategy:"merge" patchMergeKey:"peeredPrefixes"`
+
+	// EnableEncryption enables encryption for this network.
+	// +optional
+	// +kubebuilder:default=false
+	EnableEncryption bool `json:"enable_encryption,omitempty"`
 }
 
 // PeeredPrefix contains information of the peered networks and their allowed CIDRs.
