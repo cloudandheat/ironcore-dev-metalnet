@@ -803,10 +803,11 @@ func (r *NetworkInterfaceReconciler) reconcile(ctx context.Context, log logr.Log
 	}
 
 	vni := uint32(network.Spec.ID)
-	log.V(1).Info("Got network", "NetworkKey", networkKey, "VNI", vni)
+	enableEncryption := network.Spec.EnableEncryption
+	log.V(1).Info("Got network", "NetworkKey", networkKey, "VNI", vni, "EnableEncryption", enableEncryption)
 
 	log.V(1).Info("Applying interface")
-	pciAddr, underlayRoute, isCreated, err := r.applyInterface(ctx, log, nic, vni)
+	pciAddr, underlayRoute, isCreated, err := r.applyInterface(ctx, log, nic, vni, enableEncryption)
 	if err != nil {
 		if err := r.patchStatus(ctx, nic, func() {
 			nic.Status = metalnetv1alpha1.NetworkInterfaceStatus{
@@ -1224,7 +1225,16 @@ func (r *NetworkInterfaceReconciler) getInterfaceMeteringParams(nic *metalnetv1a
 	return meterParams, nil
 }
 
-func (r *NetworkInterfaceReconciler) applyInterface(ctx context.Context, log logr.Logger, nic *metalnetv1alpha1.NetworkInterface, vni uint32) (*ghw.PCIAddress, netip.Addr, bool, error) {
+func (r *NetworkInterfaceReconciler) enableInterfaceEncryption(ctx context.Context, log logr.Logger, nic *metalnetv1alpha1.NetworkInterface) error {
+	log.V(1).Info("Enabling dpdk interface encryption")
+	if _, err := r.DPDK.EnableInterfaceEncryption(ctx, string(nic.UID)); err != nil {
+		return fmt.Errorf("error enabling dpdk interface encryption: %w", err)
+	}
+	log.V(1).Info("Enabled dpdk interface encryption")
+	return nil
+}
+
+func (r *NetworkInterfaceReconciler) applyInterface(ctx context.Context, log logr.Logger, nic *metalnetv1alpha1.NetworkInterface, vni uint32, enableEncryption bool) (*ghw.PCIAddress, netip.Addr, bool, error) {
 	log.V(1).Info("Getting dpdk interface")
 	var hostName = ""
 
@@ -1278,6 +1288,12 @@ func (r *NetworkInterfaceReconciler) applyInterface(ctx context.Context, log log
 		if err != nil {
 			return nil, netip.Addr{}, false, fmt.Errorf("error creating dpdk interface: %w", err)
 		}
+		// Enable encryption before announcing any routes, so no traffic is sent unencrypted.
+		if enableEncryption {
+			if err := r.enableInterfaceEncryption(ctx, log, nic); err != nil {
+				return nil, netip.Addr{}, false, err
+			}
+		}
 		log.V(1).Info("Adding interface routes if not exist")
 		ips := getNetworkInterfaceIPs(nic)
 		if err := r.addInterfaceRoutesIfNotExist(ctx, log, vni, ips, *iface.Spec.UnderlayRoute); err != nil {
@@ -1288,6 +1304,13 @@ func (r *NetworkInterfaceReconciler) applyInterface(ctx context.Context, log log
 	}
 
 	log.V(1).Info("DPDK interface exists")
+
+	// Retry enabling encryption, in case it failed after the interface was created.
+	if enableEncryption && !iface.Spec.Encrypt {
+		if err := r.enableInterfaceEncryption(ctx, log, nic); err != nil {
+			return nil, netip.Addr{}, false, err
+		}
+	}
 
 	log.V(1).Info("Getting pci device for uid")
 	addr, err := r.NetFnsManager.Get(nic.UID)

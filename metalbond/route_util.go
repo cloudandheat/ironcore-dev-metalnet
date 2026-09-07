@@ -30,7 +30,7 @@ type DefaultRouterAddress struct {
 type RouteUtil interface {
 	AnnounceRoute(ctx context.Context, vni VNI, destination Destination, nextHop NextHop) error
 	WithdrawRoute(ctx context.Context, vni VNI, destination Destination, nextHop NextHop) error
-	Subscribe(ctx context.Context, vni VNI) error
+	Subscribe(ctx context.Context, vni VNI, enable_encryption bool) error
 	Unsubscribe(ctx context.Context, vni VNI) error
 	IsSubscribed(ctx context.Context, vni VNI) bool
 	GetRoutesForVni(ctx context.Context, vni VNI) error
@@ -131,8 +131,8 @@ func (c *MBRouteUtil) WithdrawRoute(_ context.Context, vni VNI, destination Dest
 	return nil
 }
 
-func (c *MBRouteUtil) Subscribe(_ context.Context, vni VNI) error {
-	return c.metalbond.Subscribe(vni)
+func (c *MBRouteUtil) Subscribe(_ context.Context, vni VNI, enable_encryption bool) error {
+	return c.metalbond.Subscribe(vni, enable_encryption)
 }
 
 func (c *MBRouteUtil) Unsubscribe(_ context.Context, vni VNI) error {
