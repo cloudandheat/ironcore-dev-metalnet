@@ -1,5 +1,6 @@
 # Build the manager binary
-FROM --platform=$BUILDPLATFORM golang:1.26 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.26-trixie AS builder
+
 
 ARG GOARCH=''
 
@@ -26,6 +27,7 @@ COPY encoding/ encoding/
 COPY metalbond/ metalbond/
 COPY netfns/ netfns/
 COPY sysfs/ sysfs/
+COPY key_exchange_client/ key_exchange_client/
 # Needed for version extraction by go build
 COPY .git/ .git/
 
@@ -37,7 +39,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg \
     CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH GO111MODULE=on go build -ldflags="-s -w -X main.buildVersion=$(git describe --tags)" -a -o manager main.go
 
-FROM debian:bullseye-slim
+FROM debian:trixie-slim
 WORKDIR /
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

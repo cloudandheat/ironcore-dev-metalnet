@@ -1,15 +1,15 @@
 name: Build and Publish Docker Image
 
 env:
-  platforms: linux/amd64,linux/arm64
+  platforms: linux/amd64
 
 on:
   push:
-    branches:
-      - main
-      - mvp
-    tags:
-      - v*
+    # branches:
+    #   - main
+    #   - mvp
+    # tags:
+    #   - v*
     paths-ignore:
       - 'docs/**'
       - '**/*.md'
@@ -74,6 +74,6 @@ jobs:
         with:
           context: .
           platforms: ${{env.platforms}}
-          push: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))) || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ok-to-image')) }}
+          push: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'ok-to-image') }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
